@@ -1,1 +1,1 @@
-alert('I am evil!');
+import './engine/3dg';
