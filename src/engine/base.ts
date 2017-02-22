@@ -41,7 +41,7 @@ export abstract class X3dgBase extends HTMLElement {
         const changed = {};
         for (const styleName of Object.keys(watchedStyle)) {
             const computed = style[styleName];
-            if (computed !== this.__cachedStyles[styleName]) {
+            if (computed !== 'none' && computed !== this.__cachedStyles[styleName]) {
                 this.__cachedStyles[styleName] = computed;
                 changed[styleName] = watchedStyle[styleName](computed);
             }
