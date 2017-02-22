@@ -22,17 +22,8 @@ export abstract class X3dgBase extends HTMLElement {
         const parent = this.parentElement;
         parent.add(this.mesh);
 
-        if (this.constructor.watchedStyles) {
-            this.redrawingCycle();
-        }
-    }
-
-    constructor() {
-        super();
-    }
-
-    private redrawingCycle() {
-        console.log('recalculate colors');
+        // strange constructor bug
+        const redrawingCycle = () => {
         // TODO: don't forget a cleanup
 
         // hack for using static properties
@@ -49,7 +40,38 @@ export abstract class X3dgBase extends HTMLElement {
 
         this.redraw(changed);
 
-        //window.requestAnimationFrame(this.redrawingCycle);
+        window.requestAnimationFrame(redrawingCycle);
+    }
+
+
+        if (this.constructor.watchedStyles) {
+            //this.redrawingCycle();
+            redrawingCycle();
+        }
+    }
+
+    constructor() {
+        super();
+    }
+
+    redrawingCycle = () => {
+        // TODO: don't forget a cleanup
+
+        // hack for using static properties
+        const watchedStyle = this.constructor.watchedStyles as {};
+        const style = window.getComputedStyle(this);
+        const changed = {};
+        for (const styleName of Object.keys(watchedStyle)) {
+            const computed = style[styleName];
+            if (computed !== 'none' && computed !== this.__cachedStyles[styleName]) {
+                this.__cachedStyles[styleName] = computed;
+                changed[styleName] = watchedStyle[styleName](computed);
+            }
+        }
+
+        this.redraw(changed);
+
+        window.requestAnimationFrame(this.redrawingCycle);
     }
 
     // constructor doesn work
