@@ -3,6 +3,9 @@ import { X3dgBase } from './base';
 import * as Parser from './parsers';
 
 export class X3dgSphereClass extends X3dgBase {
+    material: THREE.Material;
+    geometry: THREE.Geometry;
+
     static watchedStyles = {
         color: Parser.Color,
         transform: Parser.Matrix,
@@ -17,6 +20,7 @@ export class X3dgSphereClass extends X3dgBase {
         })
         this.geometry = new THREE.IcosahedronGeometry(0.5, 2);
         this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh.matrixAutoUpdate = false;
     }
 
     redraw(changed: {}) {

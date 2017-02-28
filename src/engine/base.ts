@@ -4,23 +4,40 @@ import {Parser} from './parsers';
 export abstract class X3dgBase extends HTMLElement {
     parentElement: X3dgBase;
     protected mesh: THREE.Mesh;
+
+    public createdCallback() {
+        console.log('created', this)
+        this.__cachedStyles = {};
+        this.add = (mesh: THREE.Mesh) => {
+            this.mesh.add(mesh);
+        }
+
+
+        this.construct();
+        this.__staticWathedStyles = this.constructor.watchedStyles;
+    }
+
     // instead of "final" keyword
     public add(mesh: THREE.Mesh) {
-        throw Error('Dont implemented method');
+        if (!this.mesh) {
+            throw Error('mesh must be initialized');
+        }
+
+        this.mesh.add(mesh);
     }
     private attachedCallback() {
         // emulate constructor by strange reason
-        this.__cachedStyles = {};
-
-
+    
         console.log('static', this.constructor.watchedStyles);
-        this.__staticWathedStyles = this.constructor.watchedStyles;
-        console.log('aaa');
 
-        this.construct();
+        //this.construct();
  
         const parent = this.parentElement;
-        parent.add(this.mesh);
+        console.log('attaching', this);
+        //debugger;
+        setTimeout(() => {
+            parent.add(this.mesh);
+        }, 0);
 
         // strange constructor bug
         const redrawingCycle = () => {

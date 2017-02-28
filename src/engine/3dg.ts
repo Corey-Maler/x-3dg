@@ -47,6 +47,13 @@ X3dgProto.attachedCallback = function () {
         scene = new THREE.Scene();
         this.scene = scene;
 
+        
+				scene.add( new THREE.AmbientLight( 0xcccccc ) );
+				const pointLight = new THREE.PointLight( 0xff4400, 5, 30 );
+				pointLight.position.set( 5, 0, 0 );
+				scene.add( pointLight );
+
+
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setClearColor(0xffffff);
         renderer.setPixelRatio(window.devicePixelRatio);

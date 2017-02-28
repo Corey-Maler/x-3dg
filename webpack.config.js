@@ -9,6 +9,7 @@ module.exports = {
         path: path.resolve(__dirname, './dist/'),
         filename: '[name].js',
         libraryTarget: 'umd',
+        publicPath: '/',
     },
 
     module: {
@@ -21,10 +22,16 @@ module.exports = {
 
     entry: {
         engine: path.resolve(__dirname, './src/index.ts'),
-        vendor: [
-            "webpack-dev-server/client?http://localhost:8080",
-            "webpack/hot/only-dev-server"
+        /*vendor: [
+           // "three",
+            //"webpack-dev-server/client?http://localhost:3000",
+            //"webpack/hot/dev-server"
         ]
+        */
+    },
+
+    devServer: {
+        contentBase: path.resolve(__dirname, './dist'),
     },
 
     resolve: {
