@@ -48,7 +48,7 @@ export class X3dgCubeClass extends X3dgBase {
     }
 
     createText(font) {
-        const textGeo = new THREE.TextGeometry('asfsaf', {
+        const textGeo = new THREE.TextGeometry(this.innerText, {
             font: font,
             size: 1,
             height: 0.01,
@@ -100,6 +100,9 @@ export class X3dgCubeClass extends X3dgBase {
         const parent = this.parentElement;
         const texture = new THREE.Texture(genDevTexture());
         texture.needsUpdate = true;
+
+        console.log('TEXT > ', this.innerText);
+        this.style.fontSize = '0';
 
         const material = new THREE.MeshLambertMaterial({
             map: texture, transparent: true
