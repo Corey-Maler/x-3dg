@@ -13,15 +13,23 @@
             x-3dg-sphere {
                 color: #333;
             }
+
+            #red-material {
+                color: red;
+            }
         </style>
     </head>
     <body>
         <x-3dg width="500" height="500">
-            <x-3dg-model src="./static/monster.json"></x-3dg-model>
+            <!-- <x-3dg-model src="./static/monster.json"></x-3dg-model> -->
+            <!-- <x-3dg-cube material="#red-material"></x-3dg-cube> -->
+            <x-3dg-text>SOME TEXT</x-3dg-text>
+            <x-3dg-material id="red-material"></x-3dg-material>
         </x-3dg>
     </body>
 
     <script>
+        
         const cube = document.getElementById('cube');
         let rotation = 0;
         const animate = function() {

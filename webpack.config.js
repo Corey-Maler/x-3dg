@@ -22,16 +22,16 @@ module.exports = {
 
     entry: {
         engine: path.resolve(__dirname, './src/index.ts'),
-        /*vendor: [
+        vendor: [
            // "three",
-            //"webpack-dev-server/client?http://localhost:3000",
-            //"webpack/hot/dev-server"
+            "webpack-dev-server/client?http://localhost:3000",
+            "webpack/hot/dev-server"
         ]
-        */
+        
     },
 
     devServer: {
-        contentBase: path.resolve(__dirname, './dist'),
+        contentBase: path.resolve(__dirname, './static'),
     },
 
     resolve: {
