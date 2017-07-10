@@ -37,6 +37,15 @@ export class X3dgCubeClass extends X3dgBase {
     construct() {
         const parent = this.parentElement;
         const texture = new THREE.Texture (genDevTexture());
+        this.style.position = 'absolute';
+        this.style.width = '8px';
+        this.style.height = '8px';
+        this.style.display = 'block';
+        this.style.background = '#000';
+        this.style.left = '0';
+        this.style.top = '0';
+        this.style.zIndex = '3';
+
         texture.needsUpdate = true;
 
         const material = new THREE.MeshLambertMaterial({
@@ -59,8 +68,17 @@ export class X3dgCubeClass extends X3dgBase {
 
 
         this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh.hover = (ms) => {
+            console.log('111');
+            this.style.left = `${ms.x - 4}px`;
+            this.style.top = `${ms.y - 4}px`;
+        };
         this.mesh.matrixAutoUpdate = false;
         this.geometry = geometry;
+    }
+
+    makeHover = (mouse) => {
+        console.log('hover')
     }
 
     redraw(changed: {}) {

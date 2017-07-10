@@ -16,12 +16,20 @@ X3dgProto.attachedCallback = function () {
     console.log('attached', this);
     const width: number = parseInt(this.getAttribute('width'));
     const height: number = parseInt(this.getAttribute('height'));
+    this.style.position = 'relative';
+    this.style.width = '500px';
+    this.style.height = '500px';
+    this.style.display = 'block';
     const container = this;
-    let camera, scene, renderer;
+    let camera, renderer;
+    let scene: THREE.Scene;
 
     let mesh, group1, group2, group3, light;
 
     let mouseX = 0, mouseY = 0;
+    let originalMouse = new THREE.Vector2();
+
+    const mouse = new THREE.Vector2();
 
     let windowHalfX = window.innerWidth / 2;
     let windowHalfY = window.innerHeight / 2;
@@ -36,6 +44,16 @@ X3dgProto.attachedCallback = function () {
     function onDocumentMouseMove(event) {
         mouseX = (event.clientX - windowHalfX);
         mouseY = (event.clientY - windowHalfY);
+    }
+
+    function onCanvasMouseMove(event) {
+        const x = event.layerX;
+        const y = event.layerY;
+        mouse.x = (x / width) * 2 - 1;
+        mouse.y = - ( y / height ) * 2 + 1;
+        console.log('mouse > ', mouse.x, mouse.y);
+        originalMouse.x = x;
+        originalMouse.y = y;
     }
 
 
@@ -58,7 +76,10 @@ X3dgProto.attachedCallback = function () {
         renderer.setClearColor(0xffffff);
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(width, height);
-        container.appendChild(renderer.domElement);
+        const canva = renderer.domElement;
+        canva.style.position = 'absolute';
+        container.appendChild(canva);
+        container.addEventListener('mousemove', onCanvasMouseMove, false);
         document.addEventListener('mousemove', onDocumentMouseMove, false);
         //
         window.addEventListener('resize', onWindowResize, false);
@@ -69,6 +90,15 @@ X3dgProto.attachedCallback = function () {
         render();
     }
     function render() {
+        // search intersections
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(mouse, camera);
+        
+        const intersects = raycaster.intersectObjects(scene.children.filter(c => c.geometry));
+        if (intersects.length > 0) {
+            intersects.forEach(i => i.object.hover && i.object.hover(originalMouse));
+        }
+        
         renderer.render(scene, camera);
     }
 
